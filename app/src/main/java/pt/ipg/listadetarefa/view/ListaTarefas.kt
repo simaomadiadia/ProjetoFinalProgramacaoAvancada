@@ -44,7 +44,7 @@ fun ListaTarefas(navController : NavController1){
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-
+                    navController.navigate("SalvaTarefas")
                 },
                 containerColor = Purple80,
 
