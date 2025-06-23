@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -60,6 +61,10 @@ fun SalvaTarefa(
             mutableStateOf("")
         }
 
+        var descricaoTarefa by remember {
+            mutableStateOf("")
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,6 +79,16 @@ fun SalvaTarefa(
                     .padding(20.dp, 20.dp, 20.dp, 0.dp),
                 label = "Titulo da Tarefa",
                 maxLines = 1,
+                keyboardType = KeyboardType.Text
+            )
+            CaixaDetexto(
+                value = descricaoTarefa ,
+                onValueChange = { descricaoTarefa  = it },
+                modifier = Modifier
+                    .fillMaxWidth().height(200.dp)
+                    .padding(20.dp, 10.dp, 20.dp, 0.dp),
+                label = "Descricao da Tarefa",
+                maxLines = 10,
                 keyboardType = KeyboardType.Text
             )
         }
