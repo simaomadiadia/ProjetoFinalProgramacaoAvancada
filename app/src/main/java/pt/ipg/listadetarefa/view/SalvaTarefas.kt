@@ -1,24 +1,12 @@
 package pt.ipg.listadetarefa.view
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import android.app.DatePickerDialog
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pt.ipg.listadetarefa.componentes.CaixaDetexto
 import pt.ipg.listadetarefa.ui.theme.Purple80
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,7 +30,7 @@ fun SalvaTarefa(
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Purple80 // ou MaterialTheme.colorScheme.primary
+                    containerColor = Purple80
                 ),
                 title = {
                     Text(
@@ -53,24 +42,34 @@ fun SalvaTarefa(
                 }
             )
         },
-        containerColor = Color.White //cor de fundo
-    ) {paddingValues ->
-        // Conteúdo da tela aqui
+        containerColor = Color.White
+    ) { paddingValues ->
 
-        var tituloTarefa by remember {
-            mutableStateOf("")
-        }
+        var tituloTarefa by remember { mutableStateOf("") }
+        var descricaoTarefa by remember { mutableStateOf("") }
+        var dataSelecionada by remember { mutableStateOf("") }
 
-        var descricaoTarefa by remember {
-            mutableStateOf("")
-        }
+        // Calendário e DatePickerDialog
+        val calendario = Calendar.getInstance()
+        val anoAtual = calendario.get(Calendar.YEAR)
+        val mesAtual = calendario.get(Calendar.MONTH)
+        val diaAtual = calendario.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            navController.context,
+            { _, year, month, dayOfMonth ->
+                dataSelecionada = "%02d/%02d/%d".format(dayOfMonth, month + 1, year)
+            },
+            anoAtual, mesAtual, diaAtual
+        )
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(paddingValues) // AQUI está a correção
+                .padding(paddingValues)
         ) {
+            // Campo Título
             CaixaDetexto(
                 value = tituloTarefa,
                 onValueChange = { tituloTarefa = it },
@@ -81,16 +80,50 @@ fun SalvaTarefa(
                 maxLines = 1,
                 keyboardType = KeyboardType.Text
             )
+
+            // Campo Descrição
             CaixaDetexto(
-                value = descricaoTarefa ,
-                onValueChange = { descricaoTarefa  = it },
+                value = descricaoTarefa,
+                onValueChange = { descricaoTarefa = it },
                 modifier = Modifier
-                    .fillMaxWidth().height(200.dp)
+                    .fillMaxWidth()
+                    .height(200.dp)
                     .padding(20.dp, 10.dp, 20.dp, 0.dp),
                 label = "Descricao da Tarefa",
                 maxLines = 10,
                 keyboardType = KeyboardType.Text
             )
+
+            // Campo de Data (somente leitura)
+            OutlinedTextField(
+                value = dataSelecionada,
+                onValueChange = {}, // somente leitura
+                label = { Text("Data da Tarefa") },
+                readOnly = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp, 10.dp, 20.dp, 0.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.LightGray
+                ),
+                trailingIcon = {
+                    Text(text = "📅")
+                }
+            )
+
+            // Botão para abrir DatePicker
+            Button(
+                onClick = { datePickerDialog.show() },
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = if (dataSelecionada.isNotEmpty()) "Data: $dataSelecionada" else "Selecionar Data"
+                )
+            }
         }
     }
 }
