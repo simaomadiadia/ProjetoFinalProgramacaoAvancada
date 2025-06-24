@@ -13,13 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import pt.ipg.listadetarefa.model.Tarefa
 import pt.ipg.listadetarefa.ui.theme.black
 
 @Composable
-fun TarefaIntem() {
+fun TarefaIntem(
+    position: Int,
+    listatarefas : MutableList<Tarefa>) {
+
+    val tituloTarefa = listatarefas[position].tarefa
+    val descricaoTarefa = listatarefas[position].descricao
+    val data = listatarefas[position].data
+
     Card(
         colors = CardDefaults.cardColors(Color.LightGray),
-        modifier = Modifier.fillMaxWidth().padding(10.dp)
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
     ) {
         ConstraintLayout(
             modifier = Modifier.padding(20.dp)
@@ -27,7 +35,7 @@ fun TarefaIntem() {
             val (txtTitulo, txtDescricao, txtData, btDeletar) = createRefs()
 
             Text(
-                text = "Tarefa 1",
+                text = tituloTarefa.toString(),
                 modifier = Modifier.constrainAs(txtTitulo) {
                     top.linkTo(parent.top, margin = 10.dp)
                     start.linkTo(parent.start, margin = 10.dp)
@@ -36,7 +44,7 @@ fun TarefaIntem() {
             )
 
             Text(
-                text = "dbdbbndnbdbnd ddbhdhkdhdhd dbddhdh ",
+                text = descricaoTarefa.toString(),
                 modifier = Modifier.constrainAs(txtDescricao) {
                     top.linkTo(txtTitulo.bottom, margin = 10.dp)
                     start.linkTo(parent.start, margin = 10.dp)
@@ -45,7 +53,7 @@ fun TarefaIntem() {
             )
 
             Text(
-                text = "Data",
+                text = data.toString(),
                 modifier = Modifier.constrainAs(txtData) {
                     top.linkTo(txtDescricao.bottom, margin = 10.dp)
                     start.linkTo(parent.start, margin = 10.dp)
@@ -75,5 +83,5 @@ fun TarefaIntem() {
 @Preview
 @Composable
 private fun TarefaIntemPreview() {
-    TarefaIntem()
+    //TarefaIntem()
 }
