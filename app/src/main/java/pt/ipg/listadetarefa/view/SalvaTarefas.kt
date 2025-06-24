@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import pt.ipg.listadetarefa.componentes.Botao
 import pt.ipg.listadetarefa.componentes.CaixaDetexto
 import pt.ipg.listadetarefa.ui.theme.Purple80
 import java.util.*
@@ -124,7 +125,19 @@ fun SalvaTarefa(
                     text = if (dataSelecionada.isNotEmpty()) "Data: $dataSelecionada" else "Selecionar Data"
                 )
             }
+
+
+            Botao(
+                onClick = { /* Lógica para salvar a tarefa */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .height(80.dp),
+                texto = "Salvar"
+            )
         }
+
+
     }
 }
 
