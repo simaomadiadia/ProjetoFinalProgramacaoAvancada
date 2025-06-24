@@ -1,5 +1,6 @@
 package pt.ipg.listadetarefa
 
+// Importações necessárias para a Activity, Compose, navegação e ViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,29 +21,41 @@ import pt.ipg.listadetarefa.view.ListaTarefas
 import pt.ipg.listadetarefa.view.SalvaTarefa
 import pt.ipg.listadetarefa.viewmodel.TarefaViewModel
 
-
+// Classe principal da aplicação que herda ComponentActivity
 class MainActivity : ComponentActivity() {
+
+    // Método chamado quando a Activity é criada
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Ativa o modo Edge-to-Edge para a UI ocupar toda a tela, inclusive áreas como barra de status
         enableEdgeToEdge()
+
+        // Define o conteúdo da Activity usando Compose
         setContent {
+            // Aplica o tema personalizado da aplicação
             ListaDeTarefaTheme {
-                /*Configuracao de navegação */
+
+                // Cria um controlador de navegação para gerenciar as telas
                 val navController = rememberNavController()
+
+                // Obtém a instância do ViewModel para gerenciamento das tarefas
                 val viewModel: TarefaViewModel = viewModel()
 
+                // Configuração do NavHost, definindo as rotas e telas da navegação
                 NavHost(navController, startDestination = "ListaTarefas") {
+
+                    // Tela inicial: lista de tarefas
                     composable("ListaTarefas") {
-                        ListaTarefas(navController, viewModel)
+                        ListaTarefas(navController, viewModel)  // Passa navController e ViewModel para a tela
                     }
+
+                    // Tela para salvar/editar tarefas
                     composable("SalvaTarefas") {
-                        SalvaTarefa(navController, viewModel)
+                        SalvaTarefa(navController, viewModel)   // Passa navController e ViewModel para a tela
                     }
                 }
+            }
         }
     }
- }
 }
-
-
-
