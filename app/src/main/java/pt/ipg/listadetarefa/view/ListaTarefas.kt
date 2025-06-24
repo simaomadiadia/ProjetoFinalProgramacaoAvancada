@@ -14,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -62,7 +64,7 @@ fun ListaTarefas(navController : NavController1){
         }
     ) { paddingValues ->  // <- USE ISSO AQUI
 
-        val listatarefas: MutableList<Tarefa> = mutableListOf(
+        val listatarefas = remember { mutableStateListOf(
             Tarefa("Tarefa 1", "Descrição da Tarefa 1", "10/10/2023"),
             Tarefa("Tarefa 2", "Descrição da Tarefa 2", "11/10/2023"),
             Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
@@ -76,11 +78,15 @@ fun ListaTarefas(navController : NavController1){
             Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
             Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
             Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023")
-        )
+        ) }
 
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
-            itemsIndexed(listatarefas) { position, _ ->
-                TarefaIntem(position, listatarefas)
+            itemsIndexed(listatarefas) { index, _ ->
+                TarefaIntem(
+                    position = index,
+                    listatarefas = listatarefas,
+                    onDelete = { listatarefas.removeAt(index) }
+                )
             }
         }
     }

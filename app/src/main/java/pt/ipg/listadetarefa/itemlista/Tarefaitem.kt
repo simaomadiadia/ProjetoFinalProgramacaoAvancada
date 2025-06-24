@@ -19,19 +19,20 @@ import pt.ipg.listadetarefa.ui.theme.black
 @Composable
 fun TarefaIntem(
     position: Int,
-    listatarefas : MutableList<Tarefa>) {
-
+    listatarefas: List<Tarefa>,
+    onDelete: () -> Unit
+) {
     val tituloTarefa = listatarefas[position].tarefa
     val descricaoTarefa = listatarefas[position].descricao
     val data = listatarefas[position].data
 
     Card(
         colors = CardDefaults.cardColors(Color.LightGray),
-        modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
     ) {
-        ConstraintLayout(
-            modifier = Modifier.padding(20.dp)
-        ) {
+        ConstraintLayout(modifier = Modifier.padding(20.dp)) {
             val (txtTitulo, txtDescricao, txtData, btDeletar) = createRefs()
 
             Text(
@@ -40,7 +41,7 @@ fun TarefaIntem(
                     top.linkTo(parent.top, margin = 10.dp)
                     start.linkTo(parent.start, margin = 10.dp)
                 },
-                color = black,
+                color = black
             )
 
             Text(
@@ -49,7 +50,7 @@ fun TarefaIntem(
                     top.linkTo(txtTitulo.bottom, margin = 10.dp)
                     start.linkTo(parent.start, margin = 10.dp)
                 },
-                color = black,
+                color = black
             )
 
             Text(
@@ -59,11 +60,11 @@ fun TarefaIntem(
                     start.linkTo(parent.start, margin = 10.dp)
                     bottom.linkTo(parent.bottom, margin = 10.dp)
                 },
-                color = black,
+                color = black
             )
 
             IconButton(
-                onClick = { /* ação ao clicar em deletar */ },
+                onClick = onDelete,
                 modifier = Modifier.constrainAs(btDeletar) {
                     top.linkTo(txtDescricao.bottom, margin = 5.dp)
                     end.linkTo(parent.end, margin = 10.dp)
