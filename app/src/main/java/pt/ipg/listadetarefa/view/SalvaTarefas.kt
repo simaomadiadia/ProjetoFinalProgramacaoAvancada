@@ -18,15 +18,21 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import pt.ipg.listadetarefa.componentes.Botao
 import pt.ipg.listadetarefa.componentes.CaixaDetexto
+import pt.ipg.listadetarefa.model.Tarefa
 import pt.ipg.listadetarefa.ui.theme.Purple80
+import pt.ipg.listadetarefa.viewmodel.TarefaViewModel
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SalvaTarefa(
-    navController: NavController
+    navController: NavController,
+    viewModel: TarefaViewModel
 ) {
+    var tituloTarefa by remember { mutableStateOf("") }
+    var descricaoTarefa by remember { mutableStateOf("") }
+    var dataSelecionada by remember { mutableStateOf("") }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -128,7 +134,18 @@ fun SalvaTarefa(
 
 
             Botao(
-                onClick = { /* Lógica para salvar a tarefa */ },
+                onClick = {
+                    if (tituloTarefa.isNotBlank() && descricaoTarefa.isNotBlank() && dataSelecionada.isNotBlank()) {
+                        viewModel.adicionarTarefa(
+                            Tarefa(
+                                tarefa = tituloTarefa,
+                                descricao = descricaoTarefa,
+                                data = dataSelecionada
+                            )
+                        )
+                        navController.popBackStack() // Volta para a lista
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp)
@@ -145,5 +162,5 @@ fun SalvaTarefa(
 @Composable
 fun SalvaTarefaPreview() {
     val navController = rememberNavController()
-    SalvaTarefa(navController = navController)
+    //SalvaTarefa(navController = navController)
 }

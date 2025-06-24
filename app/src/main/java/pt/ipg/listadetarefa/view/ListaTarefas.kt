@@ -26,11 +26,13 @@ import androidx.navigation.NavController as NavController1
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import pt.ipg.listadetarefa.model.Tarefa
+import pt.ipg.listadetarefa.viewmodel.TarefaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ListaTarefas(navController : NavController1){
+fun ListaTarefas(navController : NavController1, viewModel: TarefaViewModel){
+    val tarefas = viewModel.listaTarefas
 
     Scaffold(
         topBar = {
@@ -62,34 +64,17 @@ fun ListaTarefas(navController : NavController1){
                 )
             }
         }
-    ) { paddingValues ->  // <- USE ISSO AQUI
-
-        val listatarefas = remember { mutableStateListOf(
-            Tarefa("Tarefa 1", "Descrição da Tarefa 1", "10/10/2023"),
-            Tarefa("Tarefa 2", "Descrição da Tarefa 2", "11/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023"),
-            Tarefa("Tarefa 3", "Descrição da Tarefa 3", "12/10/2023")
-        ) }
-
+    ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
-            itemsIndexed(listatarefas) { index, _ ->
+            itemsIndexed(tarefas) { index, _ ->
                 TarefaIntem(
                     position = index,
-                    listatarefas = listatarefas,
-                    onDelete = { listatarefas.removeAt(index) }
+                    listatarefas = tarefas,
+                    onDelete = { viewModel.removerTarefa(index) }
                 )
             }
         }
     }
-
 }
+
 

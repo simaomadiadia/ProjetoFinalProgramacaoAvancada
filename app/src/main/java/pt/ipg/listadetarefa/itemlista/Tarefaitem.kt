@@ -33,7 +33,7 @@ fun TarefaIntem(
             .padding(top = 16.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
     ) {
         ConstraintLayout(modifier = Modifier.padding(20.dp)) {
-            val (txtTitulo, txtDescricao, txtData, btDeletar) = createRefs()
+            val (txtTitulo, txtDescricao, rowDataDelete) = createRefs()
 
             Text(
                 text = tituloTarefa.toString(),
@@ -53,33 +53,32 @@ fun TarefaIntem(
                 color = black
             )
 
-            Text(
-                text = data.toString(),
-                modifier = Modifier.constrainAs(txtData) {
+            // Row contendo a data e o botão de deletar
+            androidx.compose.foundation.layout.Row(
+                modifier = Modifier.constrainAs(rowDataDelete) {
                     top.linkTo(txtDescricao.bottom, margin = 10.dp)
                     start.linkTo(parent.start, margin = 10.dp)
-                    bottom.linkTo(parent.bottom, margin = 10.dp)
-                },
-                color = black
-            )
-
-            IconButton(
-                onClick = onDelete,
-                modifier = Modifier.constrainAs(btDeletar) {
-                    top.linkTo(txtDescricao.bottom, margin = 5.dp)
                     end.linkTo(parent.end, margin = 10.dp)
                     bottom.linkTo(parent.bottom, margin = 10.dp)
                 }
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Deletar",
-                    tint = Color.Red
+                Text(
+                    text = data.toString(),
+                    color = black,
+                    modifier = Modifier.weight(1f)
                 )
+                IconButton(onClick = onDelete) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Deletar",
+                        tint = Color.Red
+                    )
+                }
             }
         }
     }
 }
+
 
 @Preview
 @Composable
